@@ -12,25 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package common
+package validate
 
 import (
-	"context"
-	"fmt"
-
+	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"google.golang.org/grpc"
 )
 
-// NewHubbleConn creates a new gRPC client connection to the configured Hubble
-// target.
-func NewHubbleConn(ctx context.Context, vp *viper.Viper) (*grpc.ClientConn, error) {
-	target := vp.GetString("server")
-	dialCtx, cancel := context.WithTimeout(ctx, vp.GetDuration("timeout"))
-	defer cancel()
-	conn, err := grpc.DialContext(dialCtx, target, grpc.WithInsecure(), grpc.WithBlock())
-	if err != nil {
-		return nil, fmt.Errorf("failed to connect to '%s': %w", target, err)
-	}
-	return conn, nil
-}
+// FlagFunc is a function that validates a flag or set of flags of cmd.
+type FlagFunc func(cmd *cobra.Command, vp *viper.Viper) error
+
+// FlagFuncs is a combination of multiple flag validation functions.
+var FlagFuncs []FlagFunc
