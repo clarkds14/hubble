@@ -54,7 +54,7 @@ func New() *cobra.Command {
 	})
 
 	flags := rootCmd.PersistentFlags()
-	flags.String("config", "", "Config file (default is $HOME/.hubble.yaml)")
+	flags.String("config", "", `Config file (default "<user-config-directory>/hubble/config.yaml")`)
 	flags.BoolP("debug", "D", false, "Enable debug messages")
 	flags.String("server", defaults.GetDefaultSocketPath(), "Address of a Hubble server")
 	flags.Duration("timeout", defaults.DefaultDialTimeout, "Hubble server dialing timeout")
